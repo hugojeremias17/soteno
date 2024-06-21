@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148252031975",
+    "project_id": "soteno-firebase",
+    "storage_bucket": "soteno-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148252031975:android:2e8c64d97e8bbbb2be1b42",
+        "android_client_info": {
+          "package_name": "com.example.sotenooficial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0_1Bu7peBkrr3lTcBBAO5BLvv9Rwdj5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

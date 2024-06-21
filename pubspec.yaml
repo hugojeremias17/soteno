@@ -1,0 +1,60 @@
+name: sotenooficial
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^2.27.0
+  cloud_firestore: ^4.17.2
+  firebase_auth: ^4.19.4
+  fluttertoast: ^8.2.5
+  font_awesome_flutter: ^10.7.0
+  google_sign_in: ^6.2.1
+  line_awesome_flutter: ^2.0.0
+  firebase_storage: ^11.7.4
+  image_picker: ^1.1.1
+  cloud_firestore_web: ^3.12.2
+  firebase_auth_web: ^5.11.4
+  firebase_app_check: ^0.2.2+5
+  cupertino_icons: ^1.0.8
+  carousel_slider: 4.2.1
+  provider: ^6.1.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+  flutter_lints: ^3.0.2
+
+
+flutter:
+
+
+
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+     - images/sotenologo2.png
+     - images/sotenologo3.png
+     - images/sotenologo4.png
+     - images/fundo1app.jpg
+     - images/logo1.png
+     - images/circulo1.png
+     - images/mecanico.jpg
+     - images/Baba.jpg
+     - images/cozinheiro.jpg
+  #   - images/a_dot_ham.jpeg
+

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sotenooficial/features/app/components/minhalistaTituto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:sotenooficial/features/user_auth/presentation/pages/perfilpage.dart';
+import 'package:sotenooficial/features/user_auth/presentation/pages/perfilpageEmpregador.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/tecnicopage.dart';
 class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;

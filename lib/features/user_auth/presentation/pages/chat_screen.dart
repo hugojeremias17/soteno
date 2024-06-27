@@ -44,25 +44,26 @@ class _ChatScreenState extends State<ChatScreen> {
     final chatProvider = Provider.of<ChatProvider>(context);
     final TextEditingController _textController = TextEditingController();
 
-    return FutureBuilder<DocumentSnapshot>(
-      future: _firestore.collection('users').doc(widget.receiverId).get(),
+    return FutureBuilder(
+      future: _firestore.collection('users').where('uid', isEqualTo: widget.receiverId).get(),
 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData && snapshot.data != null) {
-            final recevierData = snapshot.data!.data() as Map<String, dynamic>?;
+            final recevierData = snapshot.data!.docs[0].data() as Map<String, dynamic>?;
             print('abaixo tem o id do recebedor');
             print( widget.receiverId);
             print('acima temos o id do recebedor');
-            final userDoc =  _firestore.collection('users').where('uid', isEqualTo: widget.receiverId).limit(1).get();
             if (recevierData != null) {
               return Scaffold(
                 backgroundColor: Color(0xFFEEEEEE),
                 appBar: AppBar(
                   title: Row(
                     children: [
-                      CircleAvatar(),
-                      SizedBox(width: 10),
+                      CircleAvatar(
+                        child: Icon(Icons.person, size: 20,),
+                      ),
+                      SizedBox(width: 6),
                       Text(recevierData['email']),
                     ],
                   ),

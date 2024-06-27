@@ -7,6 +7,7 @@ import 'package:sotenooficial/features/user_auth/presentation/pages/SignEmpresa.
 import 'package:sotenooficial/features/user_auth/presentation/pages/empregadorpage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/postVagas.dart';
+
 class vagas extends StatefulWidget {
   const vagas({super.key});
 
@@ -36,22 +37,11 @@ class _vagasState extends State<vagas> {
     return Scaffold(
       backgroundColor: Colors.grey[400],
       appBar: AppBar(
-        title: Center(
-            child: Text(
-          " V A G A S",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        )),
-        backgroundColor: Colors.grey[900],
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EmpregadorPage()),
-                );
-              },
-              icon: Icon(Icons.arrow_back))
-        ],
+        title: Text(
+                  " V A G A S",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+        backgroundColor: Colors.orangeAccent,
       ),
       body: Column(
         children: [

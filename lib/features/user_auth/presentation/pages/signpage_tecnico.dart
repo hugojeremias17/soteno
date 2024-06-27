@@ -6,6 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sotenooficial/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:sotenooficial/global/common/toast.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/tecnicopage.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SignpageTecnico extends StatefulWidget {
   const SignpageTecnico({super.key});
@@ -28,13 +33,26 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
   late TextEditingController _enderecoController;
   late TextEditingController _descricaoController;
   late TextEditingController _funcaoController;
+  late TextEditingController _experienciaController;
   User? get currentUser => _auth.currentUser;
   String? selectedValue;
   String? selecioneValor;
-
+  Uint8List? _imageWeb;
+  String? _downloadUrl;
   File? _image;
 
-  final List<String> options = ['Motorista', 'Empregada', 'Canalizador'];
+  final List<String> options = [
+    'Motorista',
+    'Empregada',
+    'Canalizador',
+    'Pintor',
+    'Carpinteiro',
+    'Lavadeira',
+    'Jardineiro',
+    'Babá',
+    'Eletrecista',
+    'Cozinheira/o'
+  ];
   final List<String> municipios = [
     'Município de Belas',
     'Município de Cacuaco',
@@ -56,6 +74,7 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
     _enderecoController = TextEditingController();
     _descricaoController = TextEditingController();
     _idadeController = TextEditingController();
+    _experienciaController = TextEditingController();
     _funcaoController = TextEditingController();
   }
 
@@ -68,19 +87,54 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
     _enderecoController.dispose();
     _descricaoController.dispose();
     _idadeController.dispose();
+    _experienciaController.dispose();
     _funcaoController.dispose();
     super.dispose();
   }
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (kIsWeb) {
+      // Use file_picker for web
+      FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
+      if (result != null) {
+        Uint8List? fileBytes = result.files.first.bytes;
+        String fileName = result.files.first.name;
+
+        // Upload to Firebase Storage
+        TaskSnapshot snapshot = await FirebaseStorage.instance
+            .ref('uploads/$fileName')
+            .putData(fileBytes!);
+
+        // Get the download URL
+        _downloadUrl = await snapshot.ref.getDownloadURL();
+
+        setState(() {
+          _imageWeb = fileBytes; // Save the selected image bytes for web
+        });
       }
-    });
+    } else {
+      // Use image_picker for mobile
+      final ImagePicker _picker = ImagePicker();
+      XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        File imageFile = File(pickedFile.path);
+
+        // Upload to Firebase Storage
+        String fileName = pickedFile.name;
+        TaskSnapshot snapshot = await FirebaseStorage.instance
+            .ref('uploads/$fileName')
+            .putFile(imageFile);
+
+        // Get the download URL
+        _downloadUrl = await snapshot.ref.getDownloadURL();
+
+        setState(() {
+          _image = imageFile; // Save the selected image file for mobile
+        });
+      }
+    }
   }
 
   Future<void> adicionarUsuario(
@@ -91,6 +145,7 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
       String descricao,
       String endereco,
       String funcao,
+      String experiencia,
       String password,
       ) async {
     try {
@@ -102,9 +157,11 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
         'idade': idade,
         'endereco': endereco,
         'funcao': funcao,
+        'experiencia': experiencia,
         'descricao': descricao,
         'password': password,
         'uid': FirebaseAuth.instance.currentUser?.uid,
+        'imageUrl': _downloadUrl, // Save the image URL
       };
 
       await usersRef.add(novoUsuario);
@@ -130,6 +187,8 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
     String descricao = _descricaoController.text;
     String endereco = _enderecoController.text;
     String funcao = _funcaoController.text;
+    String experiencia = _experienciaController.text;
+    String role = 'tecnico';
 
     User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
@@ -138,14 +197,15 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
     });
 
     if (user != null) {
-      adicionarUsuario(
+      await adicionarUsuario(
         email,
-        'tecnico',
+        role,
         username,
         idade,
         descricao,
         endereco,
         funcao,
+        experiencia,
         password,
       );
       showToast(message: "Técnico Criado com Sucesso");
@@ -176,33 +236,7 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
           key: _formKey,
           child: ListView(
             children: [
-              InkWell(
-                onTap: _pickImage,
-                child: Container(
-                  height: 200,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(),
-                  ),
-                  child: _image == null
-                      ? Center(
-                    child: Icon(
-                      Icons.camera_enhance_rounded,
-                      size: 50,
-                      color: Colors.orangeAccent,
-                    ),
-                  )
-                      : ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.file(
-                      _image!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 15),
+
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -318,10 +352,57 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
                   fillColor: Colors.grey.shade200,
                   filled: true,
                 ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  // Permite apenas números
+                ],
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira sua idade';
                   }
+
+                  final intValue = int.tryParse(value);
+                  if (intValue == null) {
+                    return 'Por favor, insira um número válido';
+                  } else if (intValue < 18) {
+                    return 'A idade deve ser maior que 18';
+                  } else if (intValue >= 65) {
+                    return 'Sua Idade é de Aposentado';
+                  }
+
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: _experienciaController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: 'Experiência',
+                  prefixIcon: Icon(Icons.watch_later_outlined),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade200, width: 1.0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  fillColor: Colors.grey.shade200,
+                  filled: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  // Permite apenas números
+                ],
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira seu tempo de experiência';
+                  }
+
+                  final intValue = int.tryParse(value);
+                  if (intValue == null) {
+                    return 'Por favor, insira um número válido';
+                  } else if (intValue >= 40) {
+                    return 'Tempo de experiência muito longo';
+                  }
+
                   return null;
                 },
               ),
@@ -380,11 +461,13 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
                   ? Center(child: CircularProgressIndicator())
                   : ElevatedButton(
                 onPressed: _signUp,
-                child: Text('Cadastrar Técnico', style: TextStyle(color: Colors.white),),
+                child: Text(
+                  'Cadastrar Técnico',
+                  style: TextStyle(color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orangeAccent,
                 ),
-
               ),
             ],
           ),
@@ -393,4 +476,3 @@ class _SignpageTecnicoState extends State<SignpageTecnico> {
     );
   }
 }
-

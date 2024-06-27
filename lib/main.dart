@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -15,18 +14,18 @@ import 'package:sotenooficial/features/user_auth/presentation/pages/sign_page.da
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/signpage_tecnico.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/vagas.dart';
-
 import 'features/user_auth/presentation/pages/chat_provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-    apiKey: "AIzaSyCSYYY0GRjXN-aqSTzEpiyDSD2aiu2tHYE",
-    appId: "1:148252031975:web:0b509605d2c4f483be1b42",
-    messagingSenderId: "148252031975",
-    projectId: "soteno-firebase",
-  ));
+          apiKey: "AIzaSyCSYYY0GRjXN-aqSTzEpiyDSD2aiu2tHYE",
+          appId: "1:148252031975:web:0b509605d2c4f483be1b42",
+          messagingSenderId: "148252031975",
+          projectId: "soteno-firebase",
+          storageBucket: "soteno-firebase.appspot.com"
+      ));
 
   /*await FirebaseAppCheck.instance.activate(
     webProvider: ReCaptchaV3Provider('6LcOf9opAAAAAAZT9V4CGS90YBhfBydbzof3-JPw'),
@@ -41,6 +40,7 @@ Future main() async {
         appId: "1:148252031975:web:0b509605d2c4f483be1b42",
         messagingSenderId: "148252031975",
         projectId: "soteno-firebase",
+          storageBucket: "soteno-firebase.appspot.com"
       ),
     );
   }
@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
     // Adicione outros provedores aqui
     ],
       child:MaterialApp(
+        debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     )
     )
@@ -185,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     case 'Empresa':
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => signEmpresa()),
+                        MaterialPageRoute(builder: (context) => SignEmpresa()),
                       );
                       break;
                     case 'Técnico':

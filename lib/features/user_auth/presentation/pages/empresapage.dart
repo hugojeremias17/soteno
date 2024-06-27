@@ -3,7 +3,9 @@ import 'package:sotenooficial/features/user_auth/presentation/pages/canalizador.
 import 'package:sotenooficial/features/user_auth/presentation/pages/empregadas.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/empregadorpage.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/home_page.dart';
+import 'package:sotenooficial/features/user_auth/presentation/pages/home_screen.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/login_page.dart';
+import 'package:sotenooficial/features/user_auth/presentation/pages/perfilEmpresa.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/sign_page.dart';
 import 'package:sotenooficial/features/app/components/drawer.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/vagas.dart';
@@ -20,13 +22,8 @@ class EmpresaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Empresa(),
-        ),
-      ),
+        body:  Empresa(),
+        )
     );
   }
 }
@@ -54,136 +51,182 @@ class _EmpresaPageState extends State<Empresa> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.orange,
-          actions: [
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(30))),
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      child: Image.asset('images/logo1.png'),
+                    ),
+                    Container(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.orangeAccent,
+                        child: Icon(Icons.person, color: Colors.white,),
+
+                      ),
+                    ),
+                    Text(
+                      'Encontre o Seu',
+                      style: TextStyle(color: Colors.black87, fontSize: 27),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      'Funcionário',
+                      style: TextStyle(color: Colors.black87, fontSize: 40),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(244, 243, 243, 1),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Promo Today',
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                height: 200,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    promoCard('images/Baba.jpg'),
+                    promoCard('images/cozinheiro.jpg'),
+                    promoCard('images/mecanico.jpg'),
+                    promoCard('images/Baba.jpg'),
+                  ],
+                ),
+              ),
+              SizedBox(height: 25,),
+              Center(
+                child: Container(
+                  width: 263,
+                  height: 54,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.orangeAccent,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5), // Cor da sombra
+                          spreadRadius: 3, // Espalhamento da sombra
+                          blurRadius: 7, // Desfoque da sombra
+                          offset: Offset(0, 3), // Deslocamento da sombra (horizontal, vertical)
+                        ),
+                      ]
+                  ),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
                       children: [
                         IconButton(
+                          icon: Icon(
+                            Icons.home_outlined,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {},
+                        ),
+                        SizedBox(width: 3,),
+                        IconButton(
+                          icon: Icon(
+                            Icons.person_2_outlined,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => perfilEmpresa()));
+                          },
+                        ),
+                        SizedBox(width: 5,),
+                        IconButton(
+                          icon: Icon(
+                            Icons.work_outline,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => vagas()));
+                          },
+                        ),
+                        SizedBox(width: 5,),
+                        IconButton(
+                          icon: Icon(
+                            Icons.message_outlined,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                          },
+                        ),
+                        SizedBox(width: 5,),
+                        IconButton(
+                          icon: Icon(
+                            Icons.logout_outlined,
+                            color: Colors.red,
+                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => EmpresaPage())
+                                    builder: (context) => MyHomePage())
                             );
                           },
-                          icon: Icon(Icons.home_outlined),
                         ),
-                        Text('H O M E', style: TextStyle(
-                            fontSize: 8.0,
-                            color: Colors.white
-                        ),)
                       ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => vagas()),
-                              );
-                            },
-                            icon: Icon(Icons.work_outline)
-                        ),
-                        Text('V A G A S', style: TextStyle(
-                            fontSize: 8.0,
-                            color: Colors.white
-                        ),)
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.person_2_outlined)
-                        ),
-                        Text('T E C N I C O', style: TextStyle(
-                            fontSize: 8.0,
-                            color: Colors.white
-                        ),)
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Column(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              FirebaseAuth.instance.signOut();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyHomePage())
-                              );
-                            },
-                            icon: Icon(Icons.notifications_outlined)
-                        ),
-                        Text(' N O T I F ', style: TextStyle(
-                            fontSize: 8.0,
-                            color: Colors.white
-                        ),)
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              )
+            ],
+          ),
         ),
-        drawer: MyDrawer(
-          onProfileTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Empresa())
-            );
-          },
-          onSignOut: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyHomePage())
-            );
-          },
-        ),
-        body: Column(
-          children: [
-            Container(
-              child: Text('Página das Empresas'),
-            ),
-            Container(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CanalizadoresPage() ));
-                },
-                child: Text('Veja os Canalizadores '),
-              ),
-            ),
-            Container(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => EmpregadasPage() ));
-                },
-                child: Text('Veja as Empregadas'),
-              ),
-            ),
-          ],
-        ),
+      ),
+    );
+  }
+  Widget promoCard(image) {
+    return AspectRatio(
+      aspectRatio: 2 / 3,
+      child: Container(
+        margin: EdgeInsets.only(left: 12),
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(20),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(image),
+            )),
       ),
     );
   }

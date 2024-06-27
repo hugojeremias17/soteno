@@ -110,7 +110,9 @@ class UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
     return ListTile(
-      leading: CircleAvatar(),
+      leading: CircleAvatar(
+        child: Icon(Icons.person, size: 20,),
+      ),
       title: Text(name),
       subtitle: Text(email),
       onTap: () async {

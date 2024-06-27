@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sotenooficial/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:sotenooficial/features/user_auth/presentation/pages/perfilpage.dart';
+import 'package:sotenooficial/features/user_auth/presentation/pages/perfilpageEmpregador.dart';
 import 'package:sotenooficial/main.dart';
 import 'package:sotenooficial/global/common/toast.dart';
 import 'package:sotenooficial/features/app/components/drawer.dart';

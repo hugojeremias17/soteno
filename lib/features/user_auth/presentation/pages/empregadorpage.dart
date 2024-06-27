@@ -5,6 +5,7 @@ import 'package:sotenooficial/features/app/components/postVaga.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/canalizador.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/chat_home.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/home_screen.dart';
+import 'package:sotenooficial/features/user_auth/presentation/pages/perfilpageEmpregador.dart';
 import 'package:sotenooficial/features/user_auth/presentation/pages/vagas.dart';
 import 'package:sotenooficial/main.dart';
 import 'package:sotenooficial/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
@@ -88,18 +89,6 @@ class _EmpregadorPageState extends State<Empregador> {
                       color: Color.fromRGBO(244, 243, 243, 1),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.black87,
-                          ),
-                          hintText:
-                              "Pesquise o tipo que funcionário que está procurando",
-                          hintStyle:
-                              TextStyle(color: Colors.grey, fontSize: 13)),
-                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -140,7 +129,8 @@ class _EmpregadorPageState extends State<Empregador> {
             SizedBox(height: 25,),
             Center(
               child: Container(
-                width: 263,
+
+                width: 320,
                 height: 54,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -173,9 +163,19 @@ class _EmpregadorPageState extends State<Empregador> {
                           color: Colors.white,
                         ),
                         onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => perfilEmpregador()));
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.people_alt_outlined,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => CanalizadoresPage()));
                         },
                       ),
+
                       SizedBox(width: 5,),
                       IconButton(
                         icon: Icon(

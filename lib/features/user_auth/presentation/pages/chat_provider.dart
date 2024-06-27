@@ -16,21 +16,16 @@ class ChatProvider with ChangeNotifier {
   Stream<QuerySnapshot> searchUsers(String query) {
     return _firestore
         .collection('users')
-        .where('email', isGreaterThanOrEqualTo: query)
-        .where('email', isLessThanOrEqualTo: query + '\uf8ff')
+        .where('username', isGreaterThanOrEqualTo: query)
+        .where('username', isLessThanOrEqualTo: query + '\uf8ff')
         .snapshots();
   }
 
-  Future<void> sendMessage(
-      String chatId, String message, String receiverId) async {
+  Future<void> sendMessage(String chatId, String message, String receiverId) async {
     final currentUser = _auth.currentUser;
 
     if (currentUser != null) {
-      await _firestore
-          .collection('chats')
-          .doc(chatId)
-          .collection('messages')
-          .add({
+      await _firestore.collection('chats').doc(chatId).collection('messages').add({
         'senderId': currentUser.uid,
         'receiverId': receiverId,
         'messageBody': message,

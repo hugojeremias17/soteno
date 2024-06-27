@@ -90,8 +90,8 @@ class _loginContratanteState extends State<loginContratante> {
     body:Form(
       key: _formKey,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.baseline,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           textBaseline: TextBaseline.ideographic,
           children: <Widget>[
             SizedBox(

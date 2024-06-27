@@ -14,14 +14,14 @@ class _CanalizadoresPageState extends State<CanalizadoresPage> {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> _getFilteredTecnicos(String query, String field) {
     // Referência à coleção 'tecnico'
-    CollectionReference<Map<String, dynamic>> tecnicosRef = _firestore.collection('tecnico');
+    CollectionReference<Map<String, dynamic>> usersRef = _firestore.collection('users');
 
     if (query.isEmpty) {
       // Retorna todos os documentos se a query estiver vazia
-      return tecnicosRef.snapshots();
+      return usersRef.where('role', isEqualTo: 'tecnico').snapshots();
     } else {
       // Filtra os documentos com base no campo selecionado
-      return tecnicosRef
+      return usersRef
           .where(field, isGreaterThanOrEqualTo: query)
           .where(field, isLessThanOrEqualTo: query + '\uf8ff')
           .snapshots();
@@ -31,7 +31,9 @@ class _CanalizadoresPageState extends State<CanalizadoresPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
         title: Text('Canalizadores'),
       ),
       body: Column(
@@ -57,7 +59,7 @@ class _CanalizadoresPageState extends State<CanalizadoresPage> {
                             child: Text('Username'),
                           ),
                           DropdownMenuItem(
-                            value: 'Funcao',
+                            value: 'funcao',
                             child: Text('Função'),
                           ),
                         ],
@@ -114,10 +116,13 @@ class _CanalizadoresPageState extends State<CanalizadoresPage> {
                               child: Center(
                                 child: Row(
                                   children: [
+                                    SizedBox(width: 5,),
                                     Container(
                                       height: 100,
                                       width: 90,
-                                      child: CircleAvatar(),
+                                      child: CircleAvatar(
+                                        child: Icon(Icons.person, color: Colors.white, size: 35,),
+                                      ),
                                     ),
                                     SizedBox(width: 5),
                                     Column(
@@ -129,7 +134,7 @@ class _CanalizadoresPageState extends State<CanalizadoresPage> {
                                           style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          canalizadorData['Funcao'] ?? '',
+                                          canalizadorData['funcao'] ?? '',
                                           style: TextStyle(fontSize: 14),
                                         ),
                                         Text(
